@@ -10,17 +10,15 @@ from crypt import AESCipher
 # Decompose a binary file into an array of bits
 def decompose(data):
 	v = []
-	
+
 	# Pack file len in 4 bytes
 	fSize = len(data)
 	bytes = [ord(b) for b in struct.pack("i", fSize)]
-	
+
 	bytes += [ord(b) for b in data]
 
 	for b in bytes:
-		for i in range(7, -1, -1):
-			v.append((b >> i) & 0x1)
-
+		v.extend((b >> i) & 0x1 for i in range(7, -1, -1))
 	return v
 
 # Assemble an array of bits into a binary file
